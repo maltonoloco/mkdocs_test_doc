@@ -17,6 +17,10 @@
          <lastmod>2025-03-13</lastmod>
     </url>
     <url>
+         <loc>http://localhost:8000/1.0.1/v1.0.1/</loc>
+         <lastmod>2025-03-13</lastmod>
+    </url>
+    <url>
          <loc>http://localhost:8000/1.0.1/guides/guide1/</loc>
          <lastmod>2025-03-13</lastmod>
     </url>
