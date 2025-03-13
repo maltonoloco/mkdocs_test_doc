@@ -4,7 +4,7 @@ site_author: "Malte Kottmann"
 repo_url: https://github.com/maltonoloco/mkdocs_test_doc
 repo_name: maltonoloco/mkdocs_test_doc
 edit_uri: ""
-docs_dir: /docs/docs
+docs_dir: ./docs
 site_dir: /site
 
 theme:
