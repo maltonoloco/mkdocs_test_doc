@@ -2,7 +2,7 @@ name: Deploy Docs
 
 on:
   push:
-    branches: [ refactor ]
+    branches: [ test/action ]
     tags: [ '*' ]
 
 jobs:
