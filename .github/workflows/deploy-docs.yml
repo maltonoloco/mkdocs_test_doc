@@ -39,3 +39,4 @@ jobs:
             echo "Deploying docs for version: $VERSION"
             mike deploy --push --branch gh-pages --remote origin "$VERSION"
             mike set-default --push --branch gh-pages --remote origin "$VERSION"
+          fi
