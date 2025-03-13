@@ -16,6 +16,7 @@ jobs:
       - name: print working dir #for debugging
         run: |
           echo $(pwd)
+          echo $(ls)
 
       - name: Set up Python
         uses: actions/setup-python@v4
