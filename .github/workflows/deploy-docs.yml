@@ -1,0 +1,40 @@
+name: Deploy Docs
+
+on:
+  push:
+    branches: [ refactor ]
+    tags: [ '*' ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: print working dir #for debugging
+        run: |
+          echo $(pwd)
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install mkdocs and plugins
+        run: |
+          pip install mkdocs-material mkdocs-macros-plugin mkdocs-glightbox mike
+
+      - name: Deploy documentation
+        run: |
+          if [ "${{ github.ref }}" == "refs/heads/main" ]; then
+            echo "Deploying docs to 'latest'..."
+            mike deploy --push --branch gh-pages --remote origin latest
+            mike set-default --push --branch gh-pages --remote origin latest
+
+          else
+            VERSION="${{ github.ref_name }}"
+            echo "Deploying docs for version: $VERSION"
+            mike deploy --push --branch gh-pages --remote origin "$VERSION"
+            mike set-default --push --branch gh-pages --remote origin "$VERSION"
