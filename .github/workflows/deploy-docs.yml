@@ -32,9 +32,9 @@ jobs:
         run: |
           pip install mkdocs-material mike mkdocs-macros-plugin mkdocs-glightbox
       
-      - name: start MkDocs
+      - name: build MkDocs
         run: |
-          mkdocs serve -f ./mkdocs.yml -a 0.0.0.0:8000
+          mkdocs build -f ./mkdocs.yml
 
       - name: Determine Version
         run: |
