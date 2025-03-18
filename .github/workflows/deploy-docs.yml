@@ -51,7 +51,6 @@ jobs:
             fi
           fi
           
-          echo $(VERSION)
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
 
       - name: list version
