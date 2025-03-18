@@ -25,10 +25,10 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Print Working Dir
-        run: |
-          echo $(pwd)
-          echo $(ls)
+      # - name: Print Working Dir
+      #   run: |
+      #     echo $(pwd)
+      #     echo $(ls)
 
       - name: Install MkDocs and Mike
         run: |
@@ -53,13 +53,13 @@ jobs:
           
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
 
-      - name: list version
-        run: |
-          cd docs/
-          mike list --config-file ../mkdocs.yml | grep '\[latest\]' | awk '{print $1}'
-          echo deterined Version: ${{ env.VERSION }}
-
-      # - name: Deploy Docs
+      # - name: list version
       #   run: |
-      #     cd docs
-      #     mike deploy --push --config-file ../mkdocs.yml --update-aliases ${{ env.VERSION }} latest
+      #     cd docs/
+      #     mike list --config-file ../mkdocs.yml | grep '\[latest\]' | awk '{print $1}'
+      #     echo deterined Version: ${{ env.VERSION }}
+
+      - name: Deploy Docs
+        run: |
+          cd docs
+          mike deploy --push --config-file ../mkdocs.yml --update-aliases ${{ env.VERSION }} latest
