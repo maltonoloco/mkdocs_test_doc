@@ -2,8 +2,6 @@ name: Deploy Docs to GitHub Pages
 
 on:
   push:
-    branches:
-      - test/action
     tags:
       - '*'
 
@@ -36,14 +34,12 @@ jobs:
       - name: Determine Version
         run: |
           cd docs/  # Ensure we are in the correct directory
-          
-          if [[ "${{ github.ref }}" == refs/tags/* ]]; then
-            VERSION="${GITHUB_REF#refs/tags/}"
-          else
+          TAG="${{ github.ref#refs/tags/ }}"
+
+          if [[ "$TAG" == "latest" ]]; then
             VERSION=$(mike list --config-file ../mkdocs.yml | grep '\[latest\]' | awk '{print $1}')
-            if [[ -z "$VERSION" ]]; then
-              VERSION="0.0.1"
-            fi
+          else
+            VERSION="$TAG"
           fi
           
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
