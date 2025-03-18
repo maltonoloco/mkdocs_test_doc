@@ -34,7 +34,7 @@ jobs:
       - name: Determine Version
         run: |
           cd docs/  # Ensure we are in the correct directory
-          TAG="${ github.ref#refs/tags/ }"
+          TAG="${github.ref#refs/tags/}"
 
           if [[ "$TAG" == "latest" ]]; then
             VERSION=$(mike list --config-file ../mkdocs.yml | grep '\[latest\]' | awk '{print $1}')
