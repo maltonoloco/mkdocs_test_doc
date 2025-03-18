@@ -15,41 +15,39 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: checkout repo
+      - name: Checkout Repository
         uses: actions/checkout@v4
       
-      - name: setup Python
+      - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.x'
 
-      - name: print working dir
+      - name: Print Working Dir
         run: |
           echo $(pwd)
           echo $(ls)
 
-      - name: install mkdocs and mike
+      - name: Install MkDocs and Mike
         run: |
           pip install mkdocs-material mike mkdocs-macros-plugin mkdocs-glightbox
       
-      - name: determine version
-        id: version
+      - name: Determine Version
         run: |
-          cd docs/
-          if [["${{ github.ref }}" == refs/tags/v*]]; then
+          cd docs/  # Ensure we are in the correct directory
+          
+          if [[ "${{ github.ref }}" == refs/tags/* ]]; then
             VERSION="${GITHUB_REF#refs/tags/}"
           else
             VERSION=$(mike list --config-file ../mkdocs.yml | grep '\[latest\]' | awk '{print $1}')
+            if [[ -z "$VERSION" ]]; then
+              VERSION="latest"
+            fi
           fi
+          
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
 
-      - name: echo latest version
+      - name: Deploy Docs
         run: |
-          echo $(mike list --config-file ../mkdocs.yml | grep '\[latest\]' | awk '{print $1}')
-          echo $(pwd)
-
-      - name: deploy docs
-        run: |
-          if [[ "${{ env.IS_VERSION }}" == "true"]]; then
-          mike deploy --push --config-file ../mkdocs.yml --update-aliases ${{  env.VERSION  }} latest
-          fi
+          cd docs
+          mike deploy --push --config-file ../mkdocs.yml --update-aliases ${{ env.VERSION }} latest
