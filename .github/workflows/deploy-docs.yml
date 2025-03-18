@@ -51,13 +51,14 @@ jobs:
             fi
           fi
           
+          echo $(VERSION)
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
 
       - name: list version
         run: |
           cd docs/
           mike list --config-file ../mkdocs.yml | grep '\[latest\]' | awk '{print $1}'
-          echo deterined Version: $(( env.VERSION ))
+          echo deterined Version: ${{ env.VERSION }}
 
       # - name: Deploy Docs
       #   run: |
