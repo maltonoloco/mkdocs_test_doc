@@ -41,7 +41,7 @@ jobs:
           else
             VERSION=$(mike list --config-file ../mkdocs.yml | grep '\[latest\]' | awk '{print $1}')
             if [[ -z "$VERSION" ]]; then
-              VERSION="latest"
+              VERSION="0.0.1"
             fi
           fi
           
