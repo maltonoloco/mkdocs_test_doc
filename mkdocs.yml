@@ -40,7 +40,8 @@ nav:
     - Module B: reference/module_b.md
   - Code:
     - Python Code: code-bsp.md
-
+  - v1.0.1: v1.0.1.md
+  
 # Mike and search plugins
 plugins:
   - search
