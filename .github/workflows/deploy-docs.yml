@@ -56,8 +56,7 @@ jobs:
       - name: list version
         run: |
           cd docs/
-          mike list --config-file ../mkdocs.yml
-          echo determined Version: ${{  env.Version  }}
+          mike list --config-file ../mkdocs.yml | grep '\[latest\]' | awk '{print $1}'
 
       # - name: Deploy Docs
       #   run: |
