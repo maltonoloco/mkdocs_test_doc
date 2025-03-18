@@ -1,42 +1,49 @@
-name: Deploy Docs
+name: Deploy Docs to GitHub Pages
 
 on:
   push:
-    branches: [ test/action ]
-    tags: [ '*' ]
+    branches:
+      - test/action
+    tags:
+      - '*'
+
+permissions:
+  contents: write
 
 jobs:
-  deploy:
+  deploy-docs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v3
-
-      - name: print working dir #for debugging
-        run: |
-          echo $(pwd)
-          echo $(ls)
-
-      - name: Set up Python
+      - name: checkout repo
+        uses: actions/checkout@v4
+      
+      - name: setup Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.x'
 
-      - name: Install mkdocs and plugins
+      - name: print working dir
         run: |
-          pip install mkdocs-material mkdocs-macros-plugin mkdocs-glightbox mike
+          echo $(pwd)
+          echo $(ls)
 
-      - name: Deploy documentation
+      - name: install mkdocs and mike
         run: |
-          if [ "${{ github.ref }}" == "refs/heads/main" ]; then
-            echo "Deploying docs to 'latest'..."
-            mike deploy --push --branch gh-pages --remote origin latest
-            mike set-default --push --branch gh-pages --remote origin latest
-
+          pip install mkdocs-material mike mkdocs-macros-plugin mkdocs-glightbox
+      
+      - name: determine version
+        id: version
+        run: |
+          if [["${{ github.ref }}" == refs/tags/v*]]; then
+            VERSION="${GITHUB_REF#refs/tags/}"
           else
-            VERSION="${{ github.ref_name }}"
-            echo "Deploying docs for version: $VERSION"
-            mike deploy --push --branch gh-pages --remote origin "$VERSION"
-            mike set-default --push --branch gh-pages --remote origin "$VERSION"
+            VERSION=$(mike list --config-file /mkdocs.yml | grep '\[latest\]' | awk '{print $1}')
+          fi
+          echo "VERSION=${VERSION}" >> $GITHUB_ENV
+
+      - name: deploy docs
+        run: |
+          if [[ "${{ env.IS_VERSION }}" == "true"]]; then
+          mike deploy --push --config-file ../mkdocs.yml --update-aliases ${{  env.VERSION  }} latest
           fi
