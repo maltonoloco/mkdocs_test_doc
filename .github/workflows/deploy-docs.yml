@@ -57,6 +57,7 @@ jobs:
         run: |
           cd docs/
           mike list --config-file ../mkdocs.yml | grep '\[latest\]' | awk '{print $1}'
+          echo deterined Version: $(( env.VERSION ))
 
       # - name: Deploy Docs
       #   run: |
