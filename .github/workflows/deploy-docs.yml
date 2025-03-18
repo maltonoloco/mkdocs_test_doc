@@ -35,16 +35,18 @@ jobs:
       - name: determine version
         id: version
         run: |
+          cd docs/
           if [["${{ github.ref }}" == refs/tags/v*]]; then
             VERSION="${GITHUB_REF#refs/tags/}"
           else
-            VERSION=$(mike list --config-file /mkdocs.yml | grep '\[latest\]' | awk '{print $1}')
+            VERSION=$(mike list --config-file ../mkdocs.yml | grep '\[latest\]' | awk '{print $1}')
           fi
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
 
       - name: echo latest version
         run: |
-          echo $(mike list --config-file /mkdocs.yml | grep '\[latest\]' | awk '{print $1}')
+          echo $(mike list --config-file ../mkdocs.yml | grep '\[latest\]' | awk '{print $1}')
+          echo $(pwd)
 
       - name: deploy docs
         run: |
