@@ -47,10 +47,11 @@ jobs:
           
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
 
-      - name: echo version
+      - name: list version
         run: |
           cd docs/
-          echo $(mike list --config-file ../mkdocs.yml | grep '\[latest\]' | awk '{print $1}')
+          echo $(mike list --config-file ../mkdocs.yml
+          
       # - name: Deploy Docs
       #   run: |
       #     cd docs
