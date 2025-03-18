@@ -50,8 +50,8 @@ jobs:
       - name: list version
         run: |
           cd docs/
-          echo $(mike list --config-file ../mkdocs.yml
-          
+          echo $(mike list --config-file ../mkdocs.yml)
+
       # - name: Deploy Docs
       #   run: |
       #     cd docs
