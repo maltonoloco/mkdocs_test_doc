@@ -57,6 +57,7 @@ jobs:
         run: |
           cd docs/
           mike list --config-file ../mkdocs.yml
+          echo determined Version: ${{  env.Version  }}
 
       # - name: Deploy Docs
       #   run: |
