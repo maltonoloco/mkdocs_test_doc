@@ -42,6 +42,10 @@ jobs:
           fi
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
 
+      - name: echo latest version
+        run: |
+          echo $(mike list --config-file /mkdocs.yml | grep '\[latest\]' | awk '{print $1}')
+
       - name: deploy docs
         run: |
           if [[ "${{ env.IS_VERSION }}" == "true"]]; then
