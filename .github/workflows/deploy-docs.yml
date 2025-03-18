@@ -1,40 +1,56 @@
-name: Deploy Docs
+name: Deploy Docs to GitHub Pages
 
 on:
   push:
-    branches: [ refactor ]
-    tags: [ '*' ]
+    tags:
+      - '*'
+
+permissions:
+  contents: write
 
 jobs:
-  deploy:
+  deploy-docs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v3
-
-      - name: print working dir #for debugging
-        run: |
-          echo $(pwd)
-
-      - name: Set up Python
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.x'
 
-      - name: Install mkdocs and plugins
+      - name: Install MkDocs and Mike
         run: |
-          pip install mkdocs-material mkdocs-macros-plugin mkdocs-glightbox mike
-
-      - name: Deploy documentation
+          pip install mkdocs-material mike mkdocs-macros-plugin mkdocs-glightbox
+      
+      - name: build MkDocs
         run: |
-          if [ "${{ github.ref }}" == "refs/heads/main" ]; then
-            echo "Deploying docs to 'latest'..."
-            mike deploy --push --branch gh-pages --remote origin latest
-            mike set-default --push --branch gh-pages --remote origin latest
+          mkdocs build -f ./mkdocs.yml
 
+      - name: Determine Version
+        run: |
+          cd docs/  # Ensure we are in the correct directory
+          TAG="${GITHUB_REF#refs/tags/}"
+
+          if [[ "$TAG" == "latest" ]]; then
+            VERSION=$(mike list --config-file ../mkdocs.yml | grep '\[latest\]' | awk '{print $1}')
           else
-            VERSION="${{ github.ref_name }}"
-            echo "Deploying docs for version: $VERSION"
-            mike deploy --push --branch gh-pages --remote origin "$VERSION"
-            mike set-default --push --branch gh-pages --remote origin "$VERSION"
+            VERSION="$TAG"
+          fi
+          
+          echo "VERSION=${VERSION}" >> $GITHUB_ENV
+      
+      - name: conigure git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "malte.kottmann@web.de"
+
+
+      - name: Deploy Docs
+        run: |
+          cd docs
+          mike deploy --push --config-file ../mkdocs.yml --update-aliases ${{ env.VERSION }} latest

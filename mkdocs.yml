@@ -4,8 +4,8 @@ site_author: "Malte Kottmann"
 repo_url: https://github.com/maltonoloco/mkdocs_test_doc
 repo_name: maltonoloco/mkdocs_test_doc
 edit_uri: ""
-docs_dir: /docs/docs
-site_dir: /site
+docs_dir: ./docs
+site_dir: ./site
 
 theme:
   name: material
@@ -40,7 +40,8 @@ nav:
     - Module B: reference/module_b.md
   - Code:
     - Python Code: code-bsp.md
-
+  - v1.0.1: v1.0.1.md
+  
 # Mike and search plugins
 plugins:
   - search
