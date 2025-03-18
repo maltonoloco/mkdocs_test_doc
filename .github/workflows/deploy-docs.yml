@@ -58,6 +58,12 @@ jobs:
       #     cd docs/
       #     mike list --config-file ../mkdocs.yml | grep '\[latest\]' | awk '{print $1}'
       #     echo deterined Version: ${{ env.VERSION }}
+      
+      - name: conigure git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "malte.kottmann@web.de"
+
 
       - name: Deploy Docs
         run: |
