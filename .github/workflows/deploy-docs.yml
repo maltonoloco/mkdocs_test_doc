@@ -25,7 +25,11 @@ jobs:
 
       - name: Install MkDocs and Mike
         run: |
-          pip install mkdocs-material mike mkdocs-macros-plugin mkdocs-glightbox
+          pip install mkdocs-material mike
+
+      - name: Install additional plugins
+        run: |
+          pip install -r requirements.txt
       
       - name: build MkDocs
         run: |
