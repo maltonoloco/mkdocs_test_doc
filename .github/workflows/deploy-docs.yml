@@ -51,7 +51,7 @@ jobs:
       - name: conigure git
         run: |
           git config --global user.name "github-actions[bot]"
-          git config --global user.email "malte.kottmann@web.de"
+          git config --global user.email "malte.kottmann@bergbaumuseum.de"
 
 
       - name: Deploy Docs
